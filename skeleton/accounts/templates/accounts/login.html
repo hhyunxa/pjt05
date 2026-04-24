@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'community/base.html' %}
 {% block content %}
   <h1>{% if request.resolver_match.url_name == 'signup' %}회원가입{% elif ... %}...{% endif %}</h1>
   <form action="" method="POST" enctype="multipart/form-data">

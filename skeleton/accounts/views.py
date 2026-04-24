@@ -12,7 +12,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user) # 가입 후 바로 로그인
-            return redirect('community:index')
+            return redirect('community:asset_list')
     else:
         form = CustomUserCreationForm()
     return render(request, 'accounts/signup.html', {'form': form})
@@ -23,7 +23,7 @@ def login(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect('community:index')
+            return redirect('community:asset_list')
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form': form})
@@ -31,7 +31,7 @@ def login(request):
 # F504: 로그아웃
 def logout(request):
     auth_logout(request)
-    return redirect('community:index')
+    return redirect('community:asset_list')
 
 # F505: 비밀번호 변경
 def change_password(request):
@@ -40,7 +40,7 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user) # 암호 변경 후 세션 유지
-            return redirect('community:index')
+            return redirect('community:asset_list')
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'accounts/change_password.html', {'form': form})
