@@ -1,0 +1,24 @@
+<h1>{{ person.username }}님의 프로필</h1>
+
+<div>
+  <p>닉네임: {{ person.nickname }}</p>
+  <p>관심 종목: {{ person.interest_stocks }}</p>
+  {% if person.profile_image %}
+    <img src="{{ person.profile_image.url }}" alt="프로필 이미지" width="100">
+  {% endif %}
+</div>
+
+<hr>
+
+<h3>내가 작성한 게시글 목록</h3>
+<ul>
+  {% for post in user_posts %}
+    <li>
+      <a href="{% url 'community:post_detail' post.asset_id post.pk %}">
+        [{{ post.asset_id }}] {{ post.title }}
+      </a>
+    </li>
+  {% empty %}
+    <li>작성한 게시글이 없습니다.</li>
+  {% endfor %}
+</ul>
