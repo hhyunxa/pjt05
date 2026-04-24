@@ -1,5 +1,7 @@
 {% extends "community/base.html" %}
+
 {% block title %}{{ post.title }} | 금융 자산 커뮤니티{% endblock %}
+
 {% block extra_css %}
 <style>
   .article-header {
@@ -25,24 +27,32 @@
   }
 </style>
 {% endblock %}
+
 {% block content %}
 <p class="breadcrumb">
-  <a href="{% url 'community:asset_list' %}">자산 목록</a> &gt;
+  <a href="{% url 'community:asset_list' %}">자산 목록</a> &gt; 
   <a href="{% url 'community:board' asset.id %}">{{ asset.name }}</a> &gt; 글 보기
 </p>
+
 <article>
   <header class="article-header">
     <h1 class="page-title">{{ post.title }}</h1>
-    <p class="text-muted mb-0">{{ post.author|default:"익명" }} · {{ post.created_at|date:"Y-m-d H:i" }}</p>
+    <p class="text-muted mb-0">
+      {{ post.author.nickname|default:post.author.username }} · {{ post.created_at|date:"Y-m-d H:i" }}
+    </p>
   </header>
   <div class="post-content">{{ post.content }}</div>
 </article>
+
 <div class="post-actions btn-group">
   <a href="{% url 'community:board' asset.id %}" class="btn btn-secondary">목록으로</a>
-  <a href="{% url 'community:post_update' asset.id post.id %}" class="btn">수정</a>
-  <form action="{% url 'community:post_delete' asset.id post.id %}" method="post" class="form-inline">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-  </form>
+
+  {% if request.user == post.author %}
+    <a href="{% url 'community:post_update' asset.id post.id %}" class="btn">수정</a>
+    <form action="{% url 'community:post_delete' asset.id post.id %}" method="post" class="form-inline">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+    </form>
+  {% endif %}
 </div>
 {% endblock %}
